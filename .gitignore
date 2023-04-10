@@ -1,1 +1,7 @@
 /config.py
+/users.db
+/venv/
+/covers/
+/books/
+/.idea/
+/__pycache__/

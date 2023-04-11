@@ -18,15 +18,18 @@ def book_done(user_id: int, book_id: int):
 
 
 def new_user(user_id: int, age: int):
+    flag = False
     connection, cursor = connect()
     qnt = cursor.execute("select count(*) from users where user_id = ?", [str(user_id)]).fetchone()
     if qnt[0] == 0:
         cursor.execute('INSERT INTO users (user_id, age) VALUES (?, ?)',
                        (user_id, age))
+        flag = True
     else:
         cursor.execute('update users set age = ? where user_id = ?', (age, user_id))
     connection.commit()
     connection.close()
+    return flag
 
 
 def parse_to_message(u_id):
@@ -44,9 +47,9 @@ def parse_to_message(u_id):
 
 def select_new_book(u_id):
     connection, cursor = connect()
-    res = cursor.execute("select id from books").fetchall()
-    pk_id = cursor.execute("select id from users where user_id = ?", [str(u_id)]).fetchone()
-    res_u = cursor.execute("select book_id from user_books where user_id = ?", str(pk_id[0])).fetchall()
+    pk_id, age = cursor.execute("select id, age from users where user_id = ?", [str(u_id)]).fetchone()
+    res = cursor.execute("select id from books where age_limit <= ?", [str(age)]).fetchall()
+    res_u = cursor.execute("select book_id from user_books where user_id = ?", str(pk_id)).fetchall()
     connection.commit()
     connection.close()
 

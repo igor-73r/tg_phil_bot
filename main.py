@@ -1,7 +1,7 @@
 import telebot
-import db_worker
 import features
 from config import *
+import keyboards
 
 bot = telebot.TeleBot(TOKEN)
 
@@ -17,32 +17,33 @@ def start(message):
 
 @bot.message_handler(content_types=['text'])
 def func(message):
-    markup = telebot.types.ReplyKeyboardMarkup(resize_keyboard=True)
-    done = telebot.types.KeyboardButton("Далее")
-    markup.add(done)
     chat_id = message.chat.id
     user_id = message.from_user.id
 
     if message.text.lower() == "начать":
-        bot.send_message(message.chat.id, text="Отлично! Вот что я нашел для тебя:", reply_markup=markup)
-        build(chat_id, user_id)
+        bot.send_message(message.chat.id, text="Отлично! Вот что я нашел для тебя:",
+                         reply_markup=keyboards.default_keyboard)
+        features.build(chat_id, user_id)
 
     elif message.text.lower() == "далее":
-        build(chat_id, user_id)
+        features.build(chat_id, user_id)
+
+    elif message.text.lower() == "настройки":
+        bot.send_message(message.chat.id, text="Настройки",
+                         reply_markup=keyboards.settings_keyboard)
+        bot.delete_message(message.chat.id, message.message_id)
+
+    elif message.text.lower() == "назад":
+        bot.send_message(message.chat.id, text="Назад",
+                         reply_markup=keyboards.default_keyboard)
+        bot.delete_message(message.chat.id, message.message_id)
+
+    elif message.text.lower() == "изменить возраст":
+        bot.send_message(message.chat.id, text="Введите возраст читателя")
+        bot.register_next_step_handler(message, features.get_age)
 
     else:
         bot.send_message(message.chat.id, text="Сударь, я вас не понимаю")
-
-
-def build(chat_id, user_id):
-    temp = db_worker.parse_to_message(user_id)
-    if temp:
-        name, description, author, file = temp
-        bot.send_photo(chat_id=chat_id, photo=open(f"covers/{file}.jpg", "rb"),
-                       caption=f"{name}\nАвтор: {author}\nОписание: {description}")
-        bot.send_document(chat_id=chat_id, document=open(f"books/{file}.fb2", "rb"))
-    else:
-        bot.send_message(chat_id=chat_id, text="На этом пока все, приходите позже")
 
 
 bot.polling(none_stop=True, interval=0)

@@ -32,8 +32,12 @@ def new_user(user_id: int, age: int):
     return flag
 
 
-def parse_to_message(u_id):
-    books_id = select_new_book(u_id)
+def parse_to_message(u_id, books_id=-1):
+    print(str(books_id))
+    if books_id != -1:
+        pass
+    else:
+        books_id = select_new_book(u_id)
     if books_id == -1:
         return 0
     else:

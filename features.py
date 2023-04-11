@@ -21,8 +21,8 @@ def get_age(message):
             bot.reply_to(message, "Введите число")
 
 
-def build(chat_id, user_id):
-    temp = db_worker.parse_to_message(user_id)
+def build(chat_id, user_id, books_id=-1):
+    temp = db_worker.parse_to_message(user_id, books_id=books_id)
     if temp:
         name, description, author, file = temp
         bot.send_photo(chat_id=chat_id, photo=open(f"covers/{file}.jpg", "rb"),

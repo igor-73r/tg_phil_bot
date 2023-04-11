@@ -33,7 +33,6 @@ def new_user(user_id: int, age: int):
 
 
 def parse_to_message(u_id, books_id=-1):
-    print(str(books_id))
     if books_id != -1:
         pass
     else:
@@ -42,11 +41,11 @@ def parse_to_message(u_id, books_id=-1):
         return 0
     else:
         connection, cursor = connect()
-        res = cursor.execute("select name, description, author, file_name from books where id = ?", str(books_id))
-        name, description, author, file = res.fetchone()
+        res = cursor.execute("select name, description, author, file_name, url from books where id = ?", str(books_id))
+        name, description, author, file, url = res.fetchone()
         connection.commit()
         connection.close()
-        return name, description, author, file
+        return name, description, author, file, url
 
 
 def select_new_book(u_id):

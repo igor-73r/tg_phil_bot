@@ -6,7 +6,7 @@ auto_keyboard = types.ReplyKeyboardMarkup(resize_keyboard=True)
 
 further = types.KeyboardButton("Далее➡️")
 settings = types.KeyboardButton("Настройки⚙️")
-back = types.KeyboardButton("Назад⬅️")
+back = types.KeyboardButton("На главную⬅️")
 library = types.KeyboardButton("Показать библиотеку📚📚")
 change_age = types.KeyboardButton("Изменить возраст✏️")
 auto = types.KeyboardButton("Авто❇️")

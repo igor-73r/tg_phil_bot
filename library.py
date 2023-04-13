@@ -16,11 +16,10 @@ def get_authors():
 def get_inline_keyboard():
     authors = get_authors()
     button = [telebot.types.InlineKeyboardButton(
-            text=author, callback_data=f'show_books_{author}')
-            for author in authors]
+        text=author, callback_data=f'show_books_{author}')
+        for author in authors]
     keyboard = [button[i:i + 3] for i in range(0, len(button), 3)]
     return telebot.types.InlineKeyboardMarkup(keyboard)
-
 
 
 def get_books_inline_keyboard(author):
@@ -28,8 +27,8 @@ def get_books_inline_keyboard(author):
     cursor.execute('SELECT name FROM books WHERE author=?', (author,))
     books = cursor.fetchall()
     button = [telebot.types.InlineKeyboardButton(
-            text=book[0], callback_data=f'show_book_{book[0]}')
-            for book in books]
+        text=book[0], callback_data=f'show_book_{book[0]}')
+        for book in books]
     keyboard = [button[i:i + 2] for i in range(0, len(button), 2)]
     return telebot.types.InlineKeyboardMarkup(keyboard)
 

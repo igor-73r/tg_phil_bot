@@ -41,7 +41,7 @@ def parse_to_message(u_id, books_id=-1):
         return 0
     else:
         connection, cursor = connect()
-        res = cursor.execute("select name, description, author, file_name, url from books where id = ?", str(books_id))
+        res = cursor.execute("select name, description, author, file_name, url from books where id = ?", [str(books_id)])
         name, description, author, file, url = res.fetchone()
         connection.commit()
         connection.close()
@@ -51,7 +51,10 @@ def parse_to_message(u_id, books_id=-1):
 def select_new_book(u_id):
     connection, cursor = connect()
     pk_id, age = cursor.execute("select id, age from users where user_id = ?", [str(u_id)]).fetchone()
-    res = cursor.execute("select id from books where age_limit <= ?", [str(age)]).fetchall()
+    if age >= 12:
+        res = cursor.execute("select id from books where age_limit <= ? and age_limit > 6", [str(age)]).fetchall()
+    else:
+        res = cursor.execute("select id from books where age_limit <= ?", [str(age)]).fetchall()
     res_u = cursor.execute("select book_id from user_books where user_id = ?", str(pk_id)).fetchall()
     connection.commit()
     connection.close()

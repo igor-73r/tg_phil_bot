@@ -26,7 +26,7 @@ def build(chat_id, user_id, books_id=-1):
     if temp:
         name, description, author, file, url = temp
         bot.send_photo(chat_id=chat_id, photo=open(f"covers/{file}.jpg", "rb"),
-                       caption=f"{name}\nАвтор: {author}\nОписание: {description}", reply_markup=keyboards.url_button(url))
+                       caption=f"<b>{name}</b>\n\n<b><i>Автор</i></b>: {author}\n\n<b><i>Описание</i></b>: {description}", reply_markup=keyboards.url_button(url), parse_mode="HTML")
         # bot.send_document(chat_id=chat_id, document=open(f"books/{file}.fb2", "rb"))
     else:
         bot.send_message(chat_id=chat_id, text="На этом пока все, приходите позже")

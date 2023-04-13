@@ -42,7 +42,7 @@ def text_handler(message):
             bot.send_message(chat_id=chat_id, text="Библиотека📚",
                              reply_markup=library.get_inline_keyboard())
 
-        case "назад":
+        case "на главную":
             bot.send_message(chat_id=chat_id, text="⬅️",
                              reply_markup=keyboards.default_keyboard)
 
